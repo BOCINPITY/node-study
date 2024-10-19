@@ -1,0 +1,38 @@
+$color-primary: #0077ff;
+$color-warning: #f15109;
+$color-error: #f50000;
+$color-success: #38b531;
+$color-bg-light: #ffffff;
+$color-bg-dark: #000000;
+$color-font-title: #181818;
+$color-font-paragraph: #0b0a0a;
+$font-size-base:16px;
+$font-size-sm:14px;
+$font-size-lg:18px;
+$space-base: 20px;
+$space-sm: 20px;
+$space-lg: 20px;
+
+
+/**
+ * 快速flex布局
+ *
+ **/
+
+@mixin flex($direction: row, $flex-wrap: no-wrap, $justify-content: space-between) {
+  display: flex;
+  flex-direction: $direction;
+  flex-wrap: $flex-wrap;
+  justify-content: $justify-content;
+}
+
+
+/**
+ * 绝对定位的水平垂直居中方式
+ **/
+@mixin havCenterByAbsolute(){
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+}
