@@ -13,7 +13,7 @@ const cookieParser = require("cookie-parser")
 //     name:"sessionId"
 // }))
 
-
+app.use(require('./proxyMiddleware'))
 app.use(require("./imageProtectMiddleware"))
 
 

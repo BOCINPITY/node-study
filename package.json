@@ -17,6 +17,7 @@
     "element-plus": "^2.8.6",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
+    "http-proxy-middleware": "^3.0.3",
     "jimp": "^1.6.0",
     "jsonwebtoken": "^9.0.2",
     "log4js": "^6.9.1",
