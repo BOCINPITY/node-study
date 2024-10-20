@@ -3,15 +3,13 @@ const path = require("path")
 const app = express()
 const port = 9527
 const cookieParser = require("cookie-parser")
-
-// const session = require("express-session")
+const session = require("express-session")
 /**
  * session中间件
  **/
-// app.use(session({
-//     secret: 'keyboard cat',
-//     name:"sessionId"
-// }))
+app.use(session({
+    secret: 'keyboard cat',
+}))
 
 app.use(require('./proxyMiddleware'))
 app.use(require("./imageProtectMiddleware"))
@@ -23,8 +21,13 @@ app.use(require("./imageProtectMiddleware"))
  *  如果不存在文件，则直接交给后续的中间件处理
  *  默认情况下，如果映射的结果是一个目录，则会自动使用index.html文件了
  **/
-app.use(express.static(path.resolve(__dirname, "../public")))
-
+app.use(express.static(path.resolve(__dirname, "../public"), {
+    setHeaders(res, path) {
+        if (!path.endsWith('.html')) {
+            res.header("Cache-Control", `max-age=${3600 * 1000}`)
+        }
+    }
+}))
 
 
 /**
@@ -32,10 +35,11 @@ app.use(express.static(path.resolve(__dirname, "../public")))
  * 主要解决跨域的相关问题
  **/
 const cors = require("cors")
+
 app.use(cors({
         exposedHeaders: ['authorization'],
         credentials: true,
-        origin: 'http://localhost:5173'
+        origin: 'http://127.0.0.1:5500'
     }
 ))
 
@@ -62,12 +66,12 @@ app.use(express.json())
 
 
 app.use(require("./apiLoggerMiddleware"))
+app.use(require('./captchaMiddleware'))
 app.use('/api/student', require('./api/student'))
 app.use('/api/admin', require('./api/admin'))
 app.use('/file', require('./api/fileUpload'))
-app.use("/download",require("./api/download"))
+app.use("/download", require("./api/download"))
 app.use(require("./errorMiddleware"))
-
 
 
 app.listen(port, () => {

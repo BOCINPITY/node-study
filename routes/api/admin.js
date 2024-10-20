@@ -8,8 +8,9 @@ router.post("/login", async (req, res) => {
     try {
         const result = await admServ.login(req.body.loginId, req.body.loginPwd)
         if (result) {
-            jwt.publish(res, {id: result.id}, undefined)
+            jwt.publish(res, {id: result.id})
             res.send(sendMsg.getResult(result))
+
         } else {
             res.send(sendMsg.getResult("登录失败",400))
         }

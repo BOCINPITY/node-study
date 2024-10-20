@@ -16,7 +16,5 @@ module.exports = (req, res, next) => {
     }
     //携带cookie的时候要明确告诉客户端可以携带，不然响应给浏览器的时候浏览器依然会认为跨域了
     res.header("access-control-allow-credentials",true)
-
-
     next()
 }

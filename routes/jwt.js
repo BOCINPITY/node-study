@@ -7,15 +7,16 @@ exports.publish = function (res, info = {}, maxAge = 3600 * 24 * 1000) {
     // 添加到cookie
     res.cookie(cookieKey, token, {
         maxAge: maxAge,
-        path: "/"
+        path: "/",
+        sameSite:"none"
     })
     //添加到其他传输，比如http响应头
     res.header("authorization", token);
 }
 
 exports.verify = function (req) {
-
     let token;
+    console.log(req)
     // 尝试从cookie中获取
     token = req.cookies[cookieKey];
     console.log(token)
