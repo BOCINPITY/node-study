@@ -3,6 +3,7 @@ const path = require("path")
 const app = express()
 const port = 9527
 const cookieParser = require("cookie-parser")
+
 // const session = require("express-session")
 /**
  * session中间件
@@ -11,13 +12,15 @@ const cookieParser = require("cookie-parser")
 //     secret: 'keyboard cat',
 //     name:"sessionId"
 // }))
+
+
 app.use((req,res,next) => {
     if(req.method === "GET"){
         if(path.extname(req.path) === '.js'){
             //设置正确的Content-Type即可
             res.setHeader('Content-Type', 'application/javascript');
         }
-        if(path.extname(req.path) === '.css'){
+        if(path.extname(req.path) ===  '.css'){
             res.setHeader('Content-Type', 'text/css');
         }
     }
@@ -29,7 +32,7 @@ app.use((req,res,next) => {
  *  如果不存在文件，则直接交给后续的中间件处理
  *  默认情况下，如果映射的结果是一个目录，则会自动使用index.html文件了
  **/
-app.use("/static", express.static(path.resolve(__dirname, "../public")))
+app.use(express.static(path.resolve(__dirname, "../public")))
 
 
 
@@ -66,8 +69,14 @@ app.use(express.urlencoded({extended: true}))
 // 解析application/json格式的请求体
 app.use(express.json())
 
+
+app.use(require("./apiLoggerMiddleware"))
 app.use('/api/student', require('./api/student'))
 app.use('/api/admin', require('./api/admin'))
+app.use('/file', require('./api/fileUpload'))
+app.use("/download",require("./api/download"))
+app.use(require("./errorMiddleware"))
+
 
 
 app.listen(port, () => {
