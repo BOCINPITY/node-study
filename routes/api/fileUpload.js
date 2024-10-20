@@ -2,10 +2,11 @@ const express = require("express")
 const router = express.Router()
 const multer = require('multer')
 const path = require("path")
-
+const mark = require('../../utils/mark')
+const markPath = path.resolve(__dirname, "../../resources/mark.png")
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.resolve(__dirname, "../../public/upload"))
+        cb(null, path.resolve(__dirname, "../../public/origin"))
     },
     //处理文件存储名字
     filename: function (req, file, cb) {
@@ -17,15 +18,20 @@ const upload = multer({
     storage, limits: {
         fileSize: 1024 * 1024 * 5//5mb
     }, fileFilter(req, file, cb) {
-        if (file.mimetype.split('/')[0] !== 'image'){
-            cb(null,false)
-        }else{
-            cb(null,true)
+        if (file.mimetype.split('/')[0] !== 'image') {
+            cb(null, false)
+        } else {
+            cb(null, true)
         }
     }
 })
-router.post("/upload/single", upload.single("img"), (req, res, next) => {
+router.post("/upload/single", upload.single("img"), async (req, res, next) => {
     const url = `http://127.0.0.1:9527/upload/${req.file.filename}`
+    //加水印
+    await mark(markPath,
+        req.file.path,
+        path.resolve(__dirname, `../../public/upload/${req.file.filename}`)
+    )
     res.send({
         code: 200,
         msg: "success",
