@@ -14,18 +14,9 @@ const cookieParser = require("cookie-parser")
 // }))
 
 
-app.use((req,res,next) => {
-    if(req.method === "GET"){
-        if(path.extname(req.path) === '.js'){
-            //设置正确的Content-Type即可
-            res.setHeader('Content-Type', 'application/javascript');
-        }
-        if(path.extname(req.path) ===  '.css'){
-            res.setHeader('Content-Type', 'text/css');
-        }
-    }
-    next()
-})
+app.use(require("./imageProtectMiddleware"))
+
+
 /**
  *  下面这段代码的作用
  *  当请求的时候，会根据请求的路径，从指定的目录中寻找是否存在该文件，如果存在，直接响应文件内容，而不再移交给后续的中间件

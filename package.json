@@ -17,7 +17,7 @@
     "element-plus": "^2.8.6",
     "express": "^4.21.1",
     "express-session": "^1.18.1",
-    "jimp": "^1.1.4",
+    "jimp": "^1.6.0",
     "jsonwebtoken": "^9.0.2",
     "log4js": "^6.9.1",
     "md5": "^2.3.0",

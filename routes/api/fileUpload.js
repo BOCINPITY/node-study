@@ -3,7 +3,7 @@ const router = express.Router()
 const multer = require('multer')
 const path = require("path")
 const mark = require('../../utils/mark')
-const markPath = path.resolve(__dirname, "../../resources/mark.png")
+const markPath = path.resolve(__dirname, "../../resources/mark.jpg")
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, path.resolve(__dirname, "../../public/origin"))
@@ -32,6 +32,7 @@ router.post("/upload/single", upload.single("img"), async (req, res, next) => {
         req.file.path,
         path.resolve(__dirname, `../../public/upload/${req.file.filename}`)
     )
+
     res.send({
         code: 200,
         msg: "success",
